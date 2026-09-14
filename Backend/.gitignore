@@ -1,0 +1,10 @@
+.gocache/
+.gomodcache/
+backend*.exe
+backend-dev.log
+backend-dev.err.log
+server.log
+server.err
+server-*.log
+server-*.out
+server-*.err
