@@ -1,0 +1,5 @@
+
+> my-project@0.1.0 dev
+> node scripts/dev-server.mjs
+
+Dev server ready on http://localhost:3000
