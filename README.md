@@ -1,114 +1,124 @@
-# CampFood
+# CampusFood
 
-A campus food ordering platform that lets students browse vendor menus, place orders, and track them through to pickup or delivery — cutting out long canteen/mess lines.
+CampusFood is a campus food ordering platform with a Go backend and a Next.js frontend. It supports student accounts, food and product management, campus kitchens, orders, student points, hall festivals, notifications, and an AI food assistant.
 
+## Project Structure
 
-## Table of contents
-
-- [How it works](#how-it-works)
-- [Tech stack](#tech-stack)
-- [Project structure](#project-structure)
-- [Getting started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Backend setup](#backend-setup)
-  - [Frontend setup](#frontend-setup)
-- [Configuration](#configuration)
-- [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
-
-## How it works
-
-- A student signs up and browses food items/menus available from campus vendors.
-- Items are added to a cart and an order is placed.
-- The order is sent to the vendor/kitchen, who updates its status as it's prepared.
-- The student tracks the order status until it's ready for pickup or delivered.
-- *(Edit this section to describe what CampFood actually does — e.g. is there a vendor/admin role, payment flow, delivery assignment, ratings?)*
-
-## Tech stack
-
-| Layer | Technology |
-|---|---|
-| Backend | `[e.g. Node.js / Express]` |
-| Frontend | `[e.g. React]` |
-| Database | `[e.g. MongoDB / PostgreSQL]` |
-| Auth | `[e.g. JWT]` |
-
-## Project structure
-
-```
-CampFood/
-├── Backend/     # Server-side code: API routes, models, database logic
-└── Frontend/    # Client-side application (UI)
+```text
+CampusFood/
+├── Backend/     Go REST API, PostgreSQL access, and database migrations
+└── Frontend/    Next.js web application
 ```
 
-## Getting started
+## Technology Stack
 
-### Prerequisites
+- **Backend:** Go 1.22+, PostgreSQL
+- **Frontend:** Next.js 16, React 19, Tailwind CSS
+- **Package managers:** Go modules and pnpm
 
-- Node.js 16+ and npm
-- `[Database name]` running locally or a connection string to a hosted instance
-- Git
+## Prerequisites
 
-### Backend setup
+Install the following before running the project:
+
+- Go 1.22 or newer
+- Node.js 20 or newer
+- pnpm
+- PostgreSQL
+
+## Backend Setup
+
+1. Create a PostgreSQL database for CampusFood.
+2. Create `Backend/.env` with the required configuration:
+
+```env
+VERSION=1.0.0
+SERVICE_NAME=campusfood
+HTTP_PORT=8000
+JWT_SECRET=replace-with-a-long-random-secret
+Admin_Email=admin@example.com
+Admin_Password=replace-with-a-secure-password
+Admin_Login_ID=0000000000
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=replace-with-your-database-password
+DB_NAME=campusfood
+SSL_MODE=false
+
+# Optional: required only for the AI assistant
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4.1-mini
+OPENAI_BASE_URL=https://api.openai.com/v1
+```
+
+3. Start the backend from its directory:
 
 ```bash
 cd Backend
-npm install
-cp .env.example .env    # create this file if it doesn't exist yet — see Configuration below
-npm start
+go mod download
+go run .
 ```
 
-The API listens on `http://localhost:[PORT]` by default.
+The backend applies database migrations from `Backend/migration` when it starts and listens on `http://localhost:8000` when `HTTP_PORT=8000`.
 
-### Frontend setup
+## Frontend Setup
+
+Install dependencies and start the development server:
 
 ```bash
 cd Frontend
-npm install
-npm start
+pnpm install
+pnpm dev
 ```
 
-The app runs on `http://localhost:3000` by default.
+Open [http://localhost:3000](http://localhost:3000) in a browser.
 
-## Configuration
+The frontend expects the backend at `http://localhost:8000`. See [Frontend/BACKEND_ENDPOINTS.md](Frontend/BACKEND_ENDPOINTS.md) for the endpoint contract and request examples.
 
-Backend configuration is environment-driven. Create a `Backend/.env` file with values such as:
+## Useful Commands
 
-| Variable | Purpose |
-|---|---|
-| `PORT` | API listen port |
-| `DATABASE_URL` | Database connection string |
-| `JWT_SECRET` | Secret used to sign auth tokens |
-
-*(Add any other variables your backend actually reads — payment keys, mail service, etc.)*
-
-## Testing
+### Backend
 
 ```bash
-# Backend
-cd Backend && npm test
-
-# Frontend
-cd Frontend && npm test
+cd Backend
+go test ./...
+go run .
 ```
 
-*(Remove this section, or fill in the real test commands, if the project doesn't have tests yet.)*
+### Frontend
 
-## Contributing
+```bash
+cd Frontend
+pnpm dev
+pnpm build
+pnpm start
+pnpm lint
+```
 
-Issues and pull requests are welcome.
+## API Overview
 
-1. Fork the repo and create a feature branch (`git checkout -b feature/YourFeature`)
-2. Commit your changes (`git commit -m 'Add some feature'`)
-3. Push to the branch (`git push origin feature/YourFeature`)
-4. Open a pull request
+The backend provides REST endpoints for:
+
+- Student registration and login
+- Student kitchens, hall kitchens, and camp kitchens
+- Food catalog and product management
+- Food orders and delivery forwarding
+- Student points and expiry tracking
+- Hall festivals
+- Food reviews
+- Notifications
+- Admin operations
+- AI-assisted food and order interactions
+
+For the detailed frontend-facing API contract, see [Frontend/BACKEND_ENDPOINTS.md](Frontend/BACKEND_ENDPOINTS.md).
+
+## Security Notes
+
+- Do not commit `Backend/.env` or any passwords, JWT secrets, database credentials, or API keys.
+- Use strong, unique values for `JWT_SECRET`, `Admin_Password`, and `DB_PASSWORD`.
+- Keep `OPENAI_API_KEY` server-side and never expose it through frontend code.
 
 ## License
 
-No license has been specified for this repository yet. All rights are reserved by the author until one is added.
-
-## Author
-
-**Naimur Rahman Ether**
-GitHub: [@NaimurRahmanEther](https://github.com/NaimurRahmanEther)
+No license has been added to this repository yet.
