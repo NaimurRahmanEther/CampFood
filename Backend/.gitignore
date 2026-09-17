@@ -8,3 +8,4 @@ server.err
 server-*.log
 server-*.out
 server-*.err
+.env
