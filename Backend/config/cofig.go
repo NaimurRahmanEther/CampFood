@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -36,7 +37,7 @@ var DBConfig DbConfig
 
 func loadConfig() {
 	err := godotenv.Load()
-	if err != nil {
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
 		fmt.Println("Error loading .env file")
 		os.Exit(1)
 	}
@@ -54,8 +55,13 @@ func loadConfig() {
 	}
 
 	httpPort := os.Getenv("HTTP_PORT")
+	// Hosting providers commonly expose the HTTP port as PORT rather than
+	// HTTP_PORT. A local .env file can still use HTTP_PORT as before.
 	if httpPort == "" {
-		fmt.Println("HTTP_PORT not set in .env file")
+		httpPort = os.Getenv("PORT")
+	}
+	if httpPort == "" {
+		fmt.Println("HTTP_PORT or PORT not set")
 		os.Exit(1)
 	}
 

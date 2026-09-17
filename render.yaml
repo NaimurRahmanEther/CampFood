@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: campusfood-api
+    runtime: docker
+    plan: free
+    rootDir: Backend
+    healthCheckPath: /health
+    envVars:
+      - key: VERSION
+        value: "1.0.0"
+      - key: SERVICE_NAME
+        value: campusfood
+      - key: JWT_SECRET
+        generateValue: true
+      - key: Admin_Email
+        sync: false
+      - key: Admin_Password
+        sync: false
+      - key: Admin_Login_ID
+        value: "0000000000"
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: SSL_MODE
+        value: "true"
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4.1-mini
+      - key: OPENAI_BASE_URL
+        value: https://api.openai.com/v1
